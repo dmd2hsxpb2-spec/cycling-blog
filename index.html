@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>De Veldrijder - Cyclocross Nieuws uit Vlaanderen</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Georgia, 'Times New Roman', serif;
+            background: #f5f1e8;
+            color: #2c2416;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            background: #1a1308;
+            color: #f5f1e8;
+            padding: 20px 0;
+            border-bottom: 4px solid #8b4513;
+        }
+
+        .header-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            font-size: 2.8em;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        .tagline {
+            font-style: italic;
+            font-size: 1.1em;
+            opacity: 0.8;
+        }
+
+        /* Navigation */
+        nav {
+            background: #2c2416;
+            padding: 15px 0;
+            border-bottom: 2px solid #8b4513;
+        }
+
+        nav ul {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+            list-style: none;
+            display: flex;
+            gap: 30px;
+        }
+
+        nav a {
+            color: #f5f1e8;
+            text-decoration: none;
+            font-size: 1.1em;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #d4a574;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        /* Article List */
+        .article-list {
+            display: grid;
+            gap: 30px;
+        }
+
+        .article-preview {
+            background: white;
+            border: 1px solid #d4a574;
+            padding: 30px;
+            cursor: pointer;
+            transition: box-shadow 0.3s;
+        }
+
+        .article-preview:hover {
+            box-shadow: 0 4px 12px rgba(139, 69, 19, 0.2);
+        }
+
+        .article-preview h2 {
+            color: #1a1308;
+            font-size: 1.8em;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #8b4513;
+            padding-bottom: 10px;
+        }
+
+        .article-meta {
+            color: #6b5d4f;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        .article-excerpt {
+            color: #2c2416;
+            line-height: 1.8;
+        }
+
+        /* Full Article View */
+        .article-full {
+            background: white;
+            border: 1px solid #d4a574;
+            padding: 40px;
+            display: none;
+        }
+
+        .article-full.active {
+            display: block;
+        }
+
+        .article-full h2 {
+            font-size: 2.2em;
+            color: #1a1308;
+            margin-bottom: 15px;
+            border-bottom: 3px solid #8b4513;
+            padding-bottom: 15px;
+        }
+
+        .article-body {
+            font-size: 1.1em;
+            line-height: 1.9;
+            color: #2c2416;
+        }
+
+        .article-body p {
+            margin-bottom: 20px;
+        }
+
+        .back-button {
+            display: inline-block;
+            background: #8b4513;
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            margin-top: 30px;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background 0.3s;
+        }
+
+        .back-button:hover {
+            background: #6b3410;
+        }
+
+        /* About Section */
+        #about-section {
+            background: white;
+            border: 1px solid #d4a574;
+            padding: 40px;
+            display: none;
+        }
+
+        #about-section.active {
+            display: block;
+        }
+
+        #about-section h2 {
+            font-size: 2.2em;
+            color: #1a1308;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #8b4513;
+            padding-bottom: 15px;
+        }
+
+        /* PIN Protected Area */
+        .pin-prompt {
+            margin-top: 30px;
+            padding: 30px;
+            background: #f9f6f0;
+            border: 2px solid #d4a574;
+        }
+
+        .pin-prompt h3 {
+            margin-bottom: 15px;
+            color: #1a1308;
+        }
+
+        .pin-input-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .pin-input-group input {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #8b4513;
+            font-size: 1em;
+            background: white;
+        }
+
+        .pin-input-group button {
+            padding: 12px 25px;
+            background: #8b4513;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        .pin-input-group button:hover {
+            background: #6b3410;
+        }
+
+        .error-message {
+            color: #c53030;
+            margin-top: 10px;
+            display: none;
+        }
+
+        /* Gist Container */
+        #gist-container {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f9f6f0;
+            border: 2px solid #d4a574;
+            display: none;
+        }
+
+        /* Footer */
+        footer {
+            background: #1a1308;
+            color: #f5f1e8;
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 60px;
+            border-top: 4px solid #8b4513;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>🚴 DE VELDRIJDER</h1>
+            <p class="tagline">Cyclocross nieuws uit het hart van Vlaanderen</p>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#" onclick="showHome(); return false;">Home</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <!-- Home Page - Article List -->
+        <div id="home-page">
+            <div class="article-list">
+                <!-- Article 1 -->
+                <div class="article-preview" onclick="showArticle(1)">
+                    <h2>Thibau Nys domineert in de modder van Heusden-Zolder</h2>
+                    <div class="article-meta">7 februari 2026 • Door Jan Vermeulen</div>
+                    <p class="article-excerpt">
+                        De jonge Belgische kampioen liet geen spaan heel van de concurrentie in de zwaarste omstandigheden. 
+                        Met een vernietingende aanval op drie ronden van het einde reed Nys weg van Laurens Sweeck en Toon Aerts...
+                    </p>
+                </div>
+
+                <!-- Article 2 -->
+                <div class="article-preview" onclick="showArticle(2)">
+                    <h2>Koppenbergcross: Een traditie in de Vlaamse Ardennen</h2>
+                    <div class="article-meta">5 februari 2026 • Door Sofie Declerck</div>
+                    <p class="article-excerpt">
+                        De legendarische Koppenbergcross blijft elk jaar opnieuw duizenden toeschouwers naar Oudenaarde lokken. 
+                        De iconische kasseistrook van 600 meter met hellingen tot 22% maakt het tot een van de zwaarste crossen...
+                    </p>
+                </div>
+
+                <!-- Article 3 -->
+                <div class="article-preview" onclick="showArticle(3)">
+                    <h2>Fem van Empel verovert opnieuw het zand van Koksijde</h2>
+                    <div class="article-meta">3 februari 2026 • Door Pieter Janssens</div>
+                    <p class="article-excerpt">
+                        De Nederlandse wereldkampioene toonde zich wederom de beste in de duinen. 
+                        Met haar technische rijvaardigheid door het diepe zand liet ze de concurrentie hopeloos achter...
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Full Article Views -->
+        <div id="article-1" class="article-full">
+            <h2>Thibau Nys domineert in de modder van Heusden-Zolder</h2>
+            <div class="article-meta">7 februari 2026 • Door Jan Vermeulen</div>
+            <div class="article-body">
+                <p>
+                    HEUSDEN-ZOLDER - In erbarmelijke weersomstandigheden heeft Thibau Nys zijn status als Belgische kampioen 
+                    kracht bijgezet met een indrukwekkende overwinning in de Superprestige van Heusden-Zolder. De 22-jarige 
+                    renner van Baloise Trek Lions reed op het iconische motorcircuit weg van al zijn concurrenten.
+                </p>
+                <p>
+                    De race werd gekenmerkt door zware regenval en diepe modderpoelen. "Dit is echte veldrijden," zei Nys 
+                    na afloop. "Geen technische parcours met kunstmatige obstakels, maar pure strijd tegen de elementen en 
+                    tegen elkaar. Dit is waar ik van hou."
+                </p>
+                <p>
+                    Met nog drie ronden te gaan plaatste Nys een vernietigende aanval op de klim naar het motorcircuit. 
+                    Laurens Sweeck en Toon Aerts moesten lossen en zouden niet meer terugkeren. Nys bouwde zijn voorsprong 
+                    methodisch uit tot meer dan 40 seconden.
+                </p>
+                <p>
+                    "Thibau was vandaag een klasse apart," erkende Sweeck sportief. "In deze omstandigheden is hij 
+                    onklopbaar. Hij combineert kracht met techniek op een manier die we zelden zien."
+                </p>
+                <p>
+                    Met deze overwinning verstevigt Nys zijn leidersplaats in het algemeen klassement van de Superprestige. 
+                    Over twee weken staat de cross van Middelkerke op het programma, de traditionele Noordzeecross waar 
+                    Nys vorig jaar ook zegevierde.
+                </p>
+            </div>
+            <button class="back-button" onclick="showHome()">← Terug naar overzicht</button>
+        </div>
+
+        <div id="article-2" class="article-full">
+            <h2>Koppenbergcross: Een traditie in de Vlaamse Ardennen</h2>
+            <div class="article-meta">5 februari 2026 • Door Sofie Declerck</div>
+            <div class="article-body">
+                <p>
+                    OUDENAARDE - De Koppenbergcross is meer dan een wedstrijd. Het is een volksfeest, een bedevaart, 
+                    een eerbetoon aan de Vlaamse wielertraditie. Elk jaar begin november stromen duizenden supporters 
+                    samen op en rond de legendarische kasseihelling die ook deel uitmaakt van de Ronde van Vlaanderen.
+                </p>
+                <p>
+                    De cross werd in 1988 voor het eerst georganiseerd en is sindsdien uitgegroeid tot een van de meest 
+                    prestigieuze in de Vlaamse kalender. De Koppenberg zelf - 600 meter kasseistrook met hellingen tot 22% - 
+                    vormt het hoogtepunt van het parcours. Renners moeten hier vaak afstappen en hun fiets dragen, 
+                    terwijl duizenden toeschouwers hen aanmoedigen vanaf de bermen.
+                </p>
+                <p>
+                    "De Koppenbergcross is uniek," vertelt organisator Erik Breugelmans. "Waar vind je nog een cross waar 
+                    de sfeer zo intens is? De renners rijden letterlijk tussen de supporters door. Je hoort het publiek 
+                    bulderen van honderd meter verderop."
+                </p>
+                <p>
+                    Het parcours van ongeveer 3 kilometer combineert technische passages door het bos, snelle weidestukken 
+                    en natuurlijk de iconische kasseistrook. Vorig jaar won Michael Vanthourenhout hier overtuigend voor 
+                    een uitgelaten thuispubliek.
+                </p>
+                <p>
+                    De Koppenbergcross is ook bekend om zijn gezellige sfeer na de race. Overal rondom het parcours staan 
+                    kraampjes met Vlaamse frieten, worstenbroodjes en uiteraard het lokale bier. "Dit is Vlaanderen op 
+                    zijn best," glundert Breugelmans. "Wielrennen, sfeer, en gezelligheid."
+                </p>
+            </div>
+            <button class="back-button" onclick="showHome()">← Terug naar overzicht</button>
+        </div>
+
+        <div id="article-3" class="article-full">
+            <h2>Fem van Empel verovert opnieuw het zand van Koksijde</h2>
+            <div class="article-meta">3 februari 2026 • Door Pieter Janssens</div>
+            <div class="article-body">
+                <p>
+                    KOKSIJDE - Fem van Empel heeft opnieuw haar meesterschap in het zand getoond met een dominante 
+                    overwinning in de UCI Wereldbeker cross van Koksijde. De Nederlandse wereldkampioene liet geen 
+                    enkele twijfel over haar vorm op het strand en in de duinen van de Belgische kust.
+                </p>
+                <p>
+                    Van Empel nam al vroeg in de race het commando. Op het strand, waar de wind vrij spel had, 
+                    reed ze weg van haar concurrenten met een kracht die deed denken aan de grote kampioenen uit 
+                    het verleden. Puck Pieterse en Lucinda Brand moesten lijdzaam toezien.
+                </p>
+                <p>
+                    "Koksijde is altijd speciaal," zei Van Empel na afloop. "Het zand, de wind, de zee op de 
+                    achtergrond. Dit is waar je als veldrijder voor leeft. En het publiek hier is fantastisch, 
+                    zelfs voor een Nederlandse."
+                </p>
+                <p>
+                    Inderdaad was het Vlaamse publiek massaal uitgelopen om de race te zien. Meer dan 15.000 
+                    toeschouwers trotseerden de koude zeewind om getuige te zijn van top-veldrijden. De duinpassages 
+                    waren zoals altijd spektakel: renners die hun fietsen door het mulle zand droegen, vallend en 
+                    opkrabbel end, vooruitgedreven door het loeien de publiek.
+                </p>
+                <p>
+                    Met deze overwinning verstevigt Van Empel haar voorsprong in de Wereldbeker. Volgende week staat 
+                    de cross van Zonhoven op het programma, een parcours dat haar ook op het lijf geschreven is. 
+                    "Ik kijk er nu al naar uit," glundert de kampioene.
+                </p>
+            </div>
+            <button class="back-button" onclick="showHome()">← Terug naar overzicht</button>
+        </div>
+
+        <!-- About Section -->
+        <div id="about-section">
+            <h2>Over De Veldrijder</h2>
+            <p style="font-size: 1.1em; line-height: 1.8; margin-bottom: 20px;">
+                De Veldrijder is een digitaal platform gewijd aan de mooiste sport ter wereld: cyclocross. 
+                Wij volgen de cross seizoen op de voet, van de eerste moddergevechten in september tot de 
+                wereldkampioenschappen in februari.
+            </p>
+            <p style="font-size: 1.1em; line-height: 1.8; margin-bottom: 20px;">
+                Ons team van gepassioneerde journalisten brengt je het laatste nieuws, analyses en achtergrondverhalen 
+                uit het Vlaamse veldritcircuit. Van de Koppenbergcross tot Koksijde, van de Superprestige tot 
+                de Wereldbeker - wij zijn er altijd bij.
+            </p>
+
+            <div class="pin-prompt">
+                <h3>🔒 Toegang voor redacteurs</h3>
+                <p>Voer de PIN code in voor toegang tot het redactiesysteem:</p>
+                <div class="pin-input-group">
+                    <input type="password" id="pin-input" placeholder="Voer PIN code in" maxlength="4">
+                    <button onclick="checkPin()">Toegang</button>
+                </div>
+                <p class="error-message" id="error-msg">Onjuiste PIN code. Probeer opnieuw.</p>
+            </div>
+
+            <div id="gist-container">
+                <h3 style="margin-bottom: 15px;">Redactiesysteem</h3>
+                <!-- GitHub Gist will be loaded dynamically after PIN verification -->
+            </div>
+
+            <button class="back-button" onclick="showHome()">← Terug naar home</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2026 De Veldrijder - Alle rechten voorbehouden</p>
+        <p style="margin-top: 10px; font-size: 0.9em; opacity: 0.8;">
+            Cyclocross nieuws uit Vlaanderen 🚴 Modder, zweet en glorie
+        </p>
+        <p style="margin-top: 15px;">
+            <a href="#" onclick="showAbout(); return false;" style="color: #d4a574; text-decoration: none;">Over Ons</a>
+        </p>
+    </footer>
+
+    <script>
+        // Flemish-named obfuscated constants
+        const KOERS_UITSLAG = "1bc3201a9f24a2fe48f634f90d406aaf6cbf5e36e292870ecba98d74b065ee1b";
+        const PARCOURS_DATA = "dmd2hsxpb2-spec/25712ed6e7c5c50af616dd111a77dd57";
+
+        // SHA-256 hash function
+        async function bereken_controle(bericht) {
+            const msgBuffer = new TextEncoder().encode(bericht);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            return hashHex;
+        }
+
+        function showHome() {
+            document.getElementById('home-page').style.display = 'block';
+            document.getElementById('about-section').style.display = 'none';
+            
+            // Hide all articles
+            const articles = document.querySelectorAll('.article-full');
+            articles.forEach(article => article.style.display = 'none');
+        }
+
+        function showAbout() {
+            document.getElementById('home-page').style.display = 'none';
+            document.getElementById('about-section').style.display = 'block';
+            
+            // Hide all articles
+            const articles = document.querySelectorAll('.article-full');
+            articles.forEach(article => article.style.display = 'none');
+        }
+
+        function showArticle(num) {
+            document.getElementById('home-page').style.display = 'none';
+            
+            // Hide all articles first
+            const articles = document.querySelectorAll('.article-full');
+            articles.forEach(article => article.style.display = 'none');
+            
+            // Show selected article
+            document.getElementById('article-' + num).style.display = 'block';
+        }
+
+        async function checkPin() {
+            const input = document.getElementById('pin-input').value;
+            const errorMsg = document.getElementById('error-msg');
+            const gistContainer = document.getElementById('gist-container');
+
+            const wedstrijd_code = await bereken_controle(input);
+
+            if (wedstrijd_code === KOERS_UITSLAG) {
+                gistContainer.style.display = 'block';
+                errorMsg.style.display = 'none';
+                document.querySelector('.pin-prompt').style.display = 'none';
+                
+                // Load Gist using fetch API to avoid document.write issues
+                const gistUrl = `https://gist.github.com/${PARCOURS_DATA}.json?callback=loadGist`;
+                
+                // Create a callback function
+                window.loadGist = function(gistData) {
+                    const gistHtml = gistData.div;
+                    const stylesheet = gistData.stylesheet;
+                    
+                    // Add stylesheet if not already present
+                    if (!document.querySelector(`link[href="${stylesheet}"]`)) {
+                        const link = document.createElement('link');
+                        link.rel = 'stylesheet';
+                        link.href = stylesheet;
+                        document.head.appendChild(link);
+                    }
+                    
+                    // Insert the Gist HTML
+                    const contentDiv = document.createElement('div');
+                    contentDiv.innerHTML = gistHtml;
+                    gistContainer.appendChild(contentDiv);
+                };
+                
+                // Load the JSONP script
+                const script = document.createElement('script');
+                script.src = gistUrl;
+                document.body.appendChild(script);
+            } else {
+                errorMsg.style.display = 'block';
+                document.getElementById('pin-input').value = '';
+            }
+        }
+
+        // Allow Enter key to submit PIN
+        document.getElementById('pin-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkPin();
+            }
+        });
+    </script>
+</body>
+</html>
